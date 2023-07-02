@@ -8,6 +8,8 @@ if (!score) {
   };
 }
 
+updateScoreElement();
+
 function playGame(playerMove) {
   const computerMove = pickComputerMove();
   let result = "";
@@ -51,21 +53,30 @@ function playGame(playerMove) {
 
   localStorage.setItem("score", JSON.stringify(score));
 
-  alert(`You picked ${playerMove}. Computer picked ${computerMove}, ${result}
-wins: ${score.wins}, loss: ${score.loss}, tie: ${score.tie}`);
+  updateScoreElement();
+
+  document.querySelector(".js-result").innerHTML = result;
+  document.querySelector(".js-moves").innerHTML = `You
+  <img src="images/${playerMove}-emoji.png" class="move-icon" alt="" />
+  <img src="images/${computerMove}-emoji.png" class="move-icon" alt="" />
+  Computer `;
+
+  function pickComputerMove() {
+    const randomNumber = Math.random();
+    let computerMove = "";
+    if (randomNumber >= 0 && randomNumber < 1 / 3) {
+      computerMove = "rock";
+    } else if (randomNumber >= 1 / 3 && randomNumber < 2 / 3) {
+      computerMove = "paper";
+    } else if (randomNumber >= 2 / 3 && randomNumber < 1) {
+      computerMove = "scissor";
+    }
+    return computerMove;
+  }
 }
 
-console.log();
-
-function pickComputerMove() {
-  const randomNumber = Math.random();
-  let computerMove = "";
-  if (randomNumber >= 0 && randomNumber < 1 / 3) {
-    computerMove = "rock";
-  } else if (randomNumber >= 1 / 3 && randomNumber < 2 / 3) {
-    computerMove = "paper";
-  } else if (randomNumber >= 2 / 3 && randomNumber < 1) {
-    computerMove = "scissor";
-  }
-  return computerMove;
+function updateScoreElement() {
+  document.querySelector(
+    ".js-score"
+  ).innerHTML = `wins: ${score.wins}, loss: ${score.loss}, tie: ${score.tie}`;
 }
